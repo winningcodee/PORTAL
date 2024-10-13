@@ -99,11 +99,16 @@
 		</section>
 		<section id="Advertisement" class="max-w-[1130px] mx-auto flex justify-center mt-[70px]">
 			<div class="flex flex-col gap-3 shrink-0 w-fit">
+				@if($bannerads)
 				<a href="{{$bannerads->link}}">
 					<div class="w-[900px] h-[120px] flex shrink-0 border border-[#EEF0F7] rounded-2xl overflow-hidden">
-						<img src="{{Storage::url($bannerads->thumbnail)}}" class="object-cover w-full h-full" alt="ads" />
+						<img src="{{ Storage::url($bannerads->thumbnail) }}" class="object-cover w-full h-full" alt="ads" />
 					</div>
 				</a>
+			@else
+				<p>No banner ads available.</p> <!-- Tampilkan pesan jika tidak ada banner -->
+			@endif
+			
 				<p class="font-medium text-sm leading-[21px] text-[#A3A6AE] flex gap-1">
 					Our Advertisement <a href="#" class="w-[18px] h-[18px]"><img src="assets/images/icons/message-question.svg" alt="icon" /></a>
 				</p>
@@ -119,13 +124,30 @@
 			</div>
 			<div class="flex justify-between items-center h-fit">
 				<div class="featured-news-card relative w-full h-[424px] flex flex-1 rounded-[20px] overflow-hidden">
-					<img src="{{Storage::url($entertainment_featured_articles->thumbnail)}}" class="thumbnail absolute w-full h-full object-cover" alt="icon" />
+					@if($entertainment_featured_articles)
+    <img src="{{ Storage::url($entertainment_featured_articles->thumbnail) }}" class="thumbnail absolute w-full h-full object-cover" alt="icon" />
+@else
+    <p>No featured articles available.</p> <!-- Tampilkan pesan jika tidak ada artikel -->
+@endif
+
 					<div class="w-full h-full bg-gradient-to-b from-[rgba(0,0,0,0)] to-[rgba(0,0,0,0.9)] absolute z-10"></div>
 					<div class="card-detail w-full flex items-end p-[30px] relative z-20">
 						<div class="flex flex-col gap-[10px]">
 							<p class="text-white">Featured</p>
-							<a href="details.html" class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">{{$entertainment_featured_articles->name}}</a>
-							<p class="text-white">{{$entertainment_featured_articles->created_at->format('M d, Y')}}</p>
+							@if($entertainment_featured_articles)
+    <a href="details.html" class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">
+        {{$entertainment_featured_articles->name}}
+    </a>
+@else
+    <p>Tidak ada artikel yang tersedia.</p> <!-- Pesan jika data tidak ada -->
+@endif
+
+@if($entertainment_featured_articles)
+<p class="text-white">{{ $entertainment_featured_articles->created_at->format('M d, Y') }}</p>
+@else
+<p class="text-white">Tanggal tidak tersedia.</p> <!-- Pesan jika data tidak ada -->
+@endif
+
 						</div>
 					</div>
 				</div>
@@ -162,13 +184,30 @@
 			</div>
 			<div class="flex justify-between items-center h-fit">
 				<div class="featured-news-card relative w-full h-[424px] flex flex-1 rounded-[20px] overflow-hidden">
-					<img src="{{Storage::url($business_featured_articles->thumbnail)}}" class="thumbnail absolute w-full h-full object-cover" alt="icon" />
+					@if($business_featured_articles && $business_featured_articles->thumbnail)
+    <img src="{{ Storage::url($business_featured_articles->thumbnail) }}" class="thumbnail absolute w-full h-full object-cover" alt="icon" />
+@else
+    <img src="path/to/default/image.jpg" class="thumbnail absolute w-full h-full object-cover" alt="default icon" /> <!-- Gambar default jika tidak ada -->
+@endif
+
 					<div class="w-full h-full bg-gradient-to-b from-[rgba(0,0,0,0)] to-[rgba(0,0,0,0.9)] absolute z-10"></div>
 					<div class="card-detail w-full flex items-end p-[30px] relative z-20">
 						<div class="flex flex-col gap-[10px]">
 							<p class="text-white">Featured</p>
-							<a href="details.html" class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">{{$business_featured_articles->name}}</a>
-							<p class="text-white">{{$business_featured_articles->created_at->format('M d, Y')}}</p>
+							@if($business_featured_articles)
+    <a href="details.html" class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">
+        {{$business_featured_articles->name}}
+    </a>
+@else
+    <a href="details.html" class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">
+        Artikel tidak tersedia
+    </a>
+@endif
+							@if($business_featured_articles)
+    <p class="text-white">{{$business_featured_articles->created_at->format('M d, Y')}}</p>
+@else
+    <p class="text-white">Tanggal tidak tersedia</p>
+@endif
 						</div>
 					</div>
 				</div>
@@ -205,13 +244,30 @@
 			</div>
 			<div class="flex justify-between items-center h-fit">
 				<div class="featured-news-card relative w-full h-[424px] flex flex-1 rounded-[20px] overflow-hidden">
-					<img src="{{Storage::url($automotive_featured_articles->thumbnail)}}" class="thumbnail absolute w-full h-full object-cover" alt="icon" />
+					@if($automotive_featured_articles)
+    <img src="{{ Storage::url($automotive_featured_articles->thumbnail) }}" class="thumbnail absolute w-full h-full object-cover" alt="icon" />
+@else
+    <img src="path/to/default/image.jpg" class="thumbnail absolute w-full h-full object-cover" alt="default icon" />
+@endif
+
 					<div class="w-full h-full bg-gradient-to-b from-[rgba(0,0,0,0)] to-[rgba(0,0,0,0.9)] absolute z-10"></div>
 					<div class="card-detail w-full flex items-end p-[30px] relative z-20">
 						<div class="flex flex-col gap-[10px]">
 							<p class="text-white">Featured</p>
-							<a href="details.html" class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">{{$automotive_featured_articles->name}}</a>
-							<p class="text-white">{{$automotive_featured_articles->created_at->format('M d, Y')}}</p>
+							@if($automotive_featured_articles)
+    <a href="details.html" class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">
+        {{$automotive_featured_articles->name}}
+    </a>
+@else
+    <a href="#" class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">
+        Artikel tidak tersedia
+    </a>
+@endif
+							@if($automotive_featured_articles)
+    <p class="text-white">{{$automotive_featured_articles->created_at->format('M d, Y')}}</p>
+@else
+    <p class="text-white">Tanggal tidak tersedia</p>
+@endif
 						</div>
 					</div>
 				</div>
