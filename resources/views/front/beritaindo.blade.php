@@ -30,11 +30,23 @@
                     <option value="hiburan" {{ request()->kategori == 'hiburan' ? 'selected' : '' }}>Hiburan</option>
                     <option value="dunia" {{ request()->kategori == 'dunia' ? 'selected' : '' }}>Dunia</option>
                     <option value="tekno" {{ request()->kategori == 'tekno' ? 'selected' : '' }}>Tekno</option>
-                    <option value="otomotif" {{ request()->kategori == 'otomotif' ? 'selected' : '' }}>Otomotif</option>        
+                    <option value="otomotif" {{ request()->kategori == 'otomotif' ? 'selected' : '' }}>Otomotif</option>
                 </select>
             </form>
         </div>
-        
+
+        <!-- Tombol Unduh CSV -->
+        <div class="text-center mb-4">
+            <a href="{{ route('front.beritaindo.csv', ['kategori' => request()->kategori ?? 'terbaru']) }}" class="btn btn-success">Unduh CSV Kategori Ini</a>
+            <a href="{{ route('front.beritaindo.csv', ['kategori' => 'terbaru']) }}" class="btn btn-warning">Unduh Semua Berita</a>
+        </div>
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         @if ($berita->isEmpty())
             <div class="alert alert-warning" role="alert">
                 Tidak ada berita untuk kategori ini.

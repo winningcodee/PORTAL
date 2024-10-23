@@ -6,6 +6,8 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\BeritaController;
 
 Route::get('/berita/{kategori?}', [BeritaController::class, 'index'])->name('front.beritaindo');
+Route::get('/beritaindo/download-csv', [BeritaController::class, 'downloadCsv'])->name('front.beritaindo.csv');
+
 
 Route::get('/', [FrontController::class, 'index'])->name('front.index');
 Route::get('/details/{article_news:slug}', [FrontController::class, 'details'])->name('front.details');
