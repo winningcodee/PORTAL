@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 class NewsController extends Controller
 {
-    public function index()
+    public function BeritaIndo()
     {
         // Fetch articles about Apple
         $appleApiKey = '9b210603eca74234a94c0958afa14c0e';
@@ -45,7 +45,7 @@ class NewsController extends Controller
         $guardianUrl = "https://content.guardianapis.com/search?api-key={$guardianApiKey}";
         $guardianResponse = Http::get($guardianUrl);
         $guardianArticles = $guardianResponse->json()['response']['results'] ?? [];
-        return view('front.berita', compact('appleArticles', 'teslaArticles', 'businessArticles', 'techCrunchArticles', 'wsjArticles', 'guardianArticles'));
+        return view('front.news', compact('appleArticles', 'teslaArticles', 'businessArticles', 'techCrunchArticles', 'wsjArticles', 'guardianArticles'));
     }
 }
 

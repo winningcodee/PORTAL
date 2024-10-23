@@ -16,4 +16,4 @@ Route::get('/author/{author:slug}', [FrontController::class, 'author'])->name('f
 Route::get('/search', [FrontController::class, 'search'])->name('front.search');
 // routes/web.php
 
-Route::get('/berita', [NewsController::class, 'index'])->name('front.berita');
+Route::get('/news', [NewsController::class, 'BeritaIndo'])->name('front.news');
