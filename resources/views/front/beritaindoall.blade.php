@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Indonesia</title>
+    <title>All News</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -24,16 +24,8 @@
             font-size: 0.9rem;
             padding: 0.5rem 1rem !important;
         }
-        .active{
-            color: white !important
-        }
         .nav-link:hover {
             color: white !important;
-        }
-        .news-ticker {
-            background-color: #f8f9fa;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #e0e0e0;
         }
         .main-content {
             background-color: white;
@@ -41,61 +33,25 @@
             border-radius: 5px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        .featured-news img {
+        .news-item {
+            margin-bottom: 1.5rem;
+        }
+        .news-item img {
             width: 100%;
-            height: 400px;
+            height: 200px;
             object-fit: cover;
             border-radius: 5px;
         }
-        .featured-news h2 {
-            font-size: 1.5rem;
-            margin-top: 1rem;
-        }
-        .side-news {
-            border-left: 1px solid #e0e0e0;
-            padding-left: 1rem;
-        }
-        .side-news-item {
-            display: flex;
-            margin-bottom: 1rem;
-        }
-        .side-news-item img {
-            width: 100px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-right: 1rem;
-        }
-        .side-news-item h5 {
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-        .side-news-item p {
-            font-size: 0.8rem;
-            color: #666;
-        }
-        .trendy-news h3 {
+        .news-item h3 {
             font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-        .trendy-news-item {
-            margin-bottom: 1rem;
-        }
-        .trendy-news-item img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .trendy-news-item h5 {
-            font-size: 0.9rem;
             margin-top: 0.5rem;
         }
-        .navbar-toggler{
-            color: white !important
+        .news-item p {
+            font-size: 0.9rem;
+            color: #666;
         }
-        .clickable:hover{
-            cursor: pointer;
+        .active{
+            color: white !important
         }
     </style>
 </head>
@@ -145,76 +101,37 @@
         </div>
     </nav>
 
-    
-    @if(session('error'))
-    <div class="news-ticker">
-        <div class="container">
-            <strong>Notice:</strong> {{ session('error') }}
-        </div>
-    </div>
-    @endif
-
-    @if ($berita->isEmpty())
-        <div class="alert alert-warning" role="alert">
-            Tidak ada berita untuk kategori ini.
-        </div>
-    @else
     <div class="container mt-4">
         <div class="main-content">
-            <div class="row">
-                <div class="col-md-8 featured-news">
-                    <div class="clickable" onclick="openInNewTab(`{{ $berita[0]['link'] }}`)">
-                        <img src="{{ $berita[0]['thumbnail'] }}" alt="Featured News">
-                        <h2>{{ $berita[0]['title'] }}</h2>
-                        <p>{{ $berita[0]['description'] }}</p>
-                    </div>
+            <h1 class="mb-4">All News</h1>
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
                 </div>
-                <div class="col-md-4 side-news">
-                    @foreach ($berita->slice(1, 5) as $item)
-                    <div class="clickable" onclick="openInNewTab(`{{ $item['link'] }}`)">
-                        <div class="side-news-item">
-                            <img src="{{ $item['thumbnail'] }}" alt="thumbnail">
-                            <div>
-                                <h5>{{ $item['title'] ?? 'Judul tidak tersedia' }}</h5>
-                                <p>{{ \Carbon\Carbon::parse($item['pubDate'] ?? now())->format('d M Y H:i') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-            </div>
+            @endif
 
-            <div class="trendy-news mt-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h3>Berita Terkait</h3>
-                    <a href="{{ route('front.beritaindoall', ['kategori' => request()->kategori ?? 'terbaru']) }}">Lihat Semua Berita</a>
+            @if ($berita->isEmpty())
+                <div class="alert alert-warning" role="alert">
+                    Tidak ada berita untuk kategori ini.
                 </div>
-                <div class="row">
-                    @foreach ($berita->slice(6, 4) as $item)
-                    <div class="col-md-3 trendy-news-item">
-                        <div class="clickable" onclick="openInNewTab(`{{ $item['link'] }}`)">
-                            @if(isset($item['thumbnail']))
-                                <img src="{{ $item['thumbnail'] }}" alt="thumbnail">
-                            @endif
-                            <h5>{{ $item['title'] ?? 'Judul tidak tersedia' }}</h5>
-                        </div>
-                    </div>
-                    @endforeach
+            @else
+            <div class="row">
+                @foreach ($berita as $item)
+                <div class="col-md-4 news-item">
+                    @if(isset($item['thumbnail']))
+                        <img src="{{ $item['thumbnail'] }}" alt="thumbnail">
+                    @endif
+                    <h3>{{ $item['title'] ?? 'Judul tidak tersedia' }}</h3>
+                    <p>{{ $berita[0]['description'] }}</p>
+                    <a href="{{ $item['link'] ?? '#' }}" target="_blank" class="btn btn-primary btn-sm">Selengkapnya</a>
                 </div>
+                @endforeach
             </div>
-            <div class="text-center">
-               <a href="{{ route('front.beritaindo.csv', ['kategori' => request()->kategori ?? 'terbaru']) }}" class="btn btn-success">Unduh CSV Kategori Ini</a>
-               <a href="{{ route('front.beritaindo.csv', ['kategori' => 'terbaru']) }}" class="btn btn-warning">Unduh Semua Berita</a>
-           </div>
+            @endif
         </div>
-        @endif
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function openInNewTab(url) {
-            window.open(url, '_blank');
-        }
-    </script>
+
 </body>
 </html>

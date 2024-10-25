@@ -3,206 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News Slider Example</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Berita Manca Negara</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            margin: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
         }
-        .slider-container {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 20px;
-            padding-bottom: 10px;
+        .navbar {
+            background-color: #1a1a1a;
+            padding: 0.5rem 1rem;
         }
-        .article-box {
-            min-width: 300px;
-            flex: 0 0 auto;
+        .navbar-brand {
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .nav-link {
+            color: #a0a0a0 !important;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem !important;
+        }
+        .active{
+            color: white !important
+        }
+        .nav-link:hover {
+            color: white !important;
+        }
+        .news-ticker {
             background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            scroll-snap-align: start;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e0e0e0;
         }
-        h2 {
-            font-size: 1.2em;
-            color: #343a40;
+        .main-content {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        p {
-            color: #6c757d;
-            font-size: 0.9em;
+        .featured-news img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 5px;
         }
-        .slider-controls {
-            text-align: center;
-            margin-top: 20px;
+        .featured-news h2 {
+            font-size: 1.5rem;
+            margin-top: 1rem;
         }
-        .slider-controls button {
-            margin: 0 10px;
+        .side-news {
+            border-left: 1px solid #e0e0e0;
+            padding-left: 1rem;
+        }
+        .side-news-item {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        .side-news-item img {
+            width: 100px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 1rem;
+        }
+        .side-news-item h5 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        .side-news-item p {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        .trendy-news h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        .trendy-news-item {
+            margin-bottom: 1rem;
+        }
+        .trendy-news-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .trendy-news-item h5 {
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .navbar-toggler{
+            color: white !important
+        }
+        .clickable:hover{
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('front.news', ['kategori' => 'business']) }}">News</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->kategori == 'business' ? 'active' : '' }}" href="{{ route('front.news', ['kategori' => 'business']) }}">Business</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link {{ request()->kategori == 'apple' ? 'active' : '' }}" href="{{ route('front.news', ['kategori' => 'apple']) }}">Apple</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->kategori == 'tesla' ? 'active' : '' }}" href="{{ route('front.news', ['kategori' => 'tesla']) }}">Tesla</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->kategori == 'techcrunch' ? 'active' : '' }}" href="{{ route('front.news', ['kategori' => 'techcrunch']) }}">TechCrunch</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->kategori == 'wsj' ? 'active' : '' }}" href="{{ route('front.news', ['kategori' => 'wsj']) }}">WSJ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->kategori == 'guardian' ? 'active' : '' }}" href="{{ route('front.news', ['kategori' => 'guardian']) }}">Guardian</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <div class="container">
-        <h1 class="text-center">Latest News</h1>
+    
+    @if(session('error'))
+    <div class="news-ticker">
+        <div class="container">
+            <strong>Notice:</strong> {{ session('error') }}
+        </div>
+    </div>
+    @endif
 
-        <h2 class="text-center">Apple News</h2>
-        <div class="slider-container" id="apple-news-container">
-            @forelse ($appleArticles as $article)
-                <div class="article-box card">
-                    <div class="card-body">
-                        <h2 class="card-title">{{ $article['title'] }}</h2>
-                        <p class="card-text">{{ $article['description'] ?? 'No description available.' }}</p>
-                        <a href="{{ $article['url'] }}" class="btn btn-primary" target="_blank">Read more</a>
+    @if (collect($articles)->isEmpty())
+        <div class="alert alert-warning" role="alert">
+            Tidak ada berita untuk kategori ini.
+        </div>
+    @else
+    <div class="container mt-4">
+        <div class="main-content">
+            <div class="row">
+                <div class="col-md-8 featured-news">
+                    <div class="clickable" onclick="openInNewTab(`{{ $articles[0]['url'] }}`)">
+                        <img src="{{ $articles[0]['urlToImage'] }}" alt="Featured News">
+                        <h2>{{ $articles[0]['title'] }}</h2>
+                        <p>{{ $articles[0]['description'] }}</p>
                     </div>
                 </div>
-            @empty
-                <p>No articles found for Apple.</p>
-            @endforelse
-        </div>
-
-        <div class="slider-controls">
-            <button id="prev-apple-btn" class="btn btn-secondary">Previous</button>
-            <button id="next-apple-btn" class="btn btn-secondary">Next</button>
-        </div>
-
-        <h2 class="text-center">Tesla News</h2>
-        <div class="slider-container" id="tesla-news-container">
-            @forelse ($teslaArticles as $article)
-                <div class="article-box card">
-                    <div class="card-body">
-                        <h2 class="card-title">{{ $article['title'] }}</h2>
-                        <p class="card-text">{{ $article['description'] ?? 'No description available.' }}</p>
-                        <a href="{{ $article['url'] }}" class="btn btn-primary" target="_blank">Read more</a>
+                <div class="col-md-4 side-news">
+                    @foreach (collect($articles)->slice(1, 5) as $item)
+                    <div class="clickable" onclick="openInNewTab(`{{ $item['url'] }}`)">
+                        <div class="side-news-item">
+                            <img src="{{ $item['urlToImage'] }}" alt="urlToImage">
+                            <div>
+                                <h5>{{ $item['title'] ?? 'Judul tidak tersedia' }}</h5>
+                                <p>{{ \Carbon\Carbon::parse($item['pubDate'] ?? now())->format('d M Y H:i') }}</p>
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
                 </div>
-            @empty
-                <p>No articles found for Tesla.</p>
-            @endforelse
-        </div>
+            </div>
 
-        <div class="slider-controls">
-            <button id="prev-tesla-btn" class="btn btn-secondary">Previous</button>
-            <button id="next-tesla-btn" class="btn btn-secondary">Next</button>
-        </div>
-
-        <h2 class="text-center">Business News</h2>
-        <div class="slider-container" id="business-news-container">
-            @forelse ($businessArticles as $article)
-                <div class="article-box card">
-                    <div class="card-body">
-                        <h2 class="card-title">{{ $article['title'] }}</h2>
-                        <p class="card-text">{{ $article['description'] ?? 'No description available.' }}</p>
-                        <a href="{{ $article['url'] }}" class="btn btn-primary" target="_blank">Read more</a>
+            <div class="trendy-news mt-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3>Berita Terkait</h3>
+                    <a href="{{ route('front.newsall', ['kategori' => request()->kategori ?? 'business']) }}">Lihat Semua Berita</a>
+                </div>
+                <div class="row">
+                    @foreach (collect($articles)->slice(6, 4) as $item)
+                    <div class="col-md-3 trendy-news-item">
+                        <div class="clickable" onclick="openInNewTab(`{{ $item['url'] }}`)">
+                            @if(isset($item['urlToImage']))
+                                <img src="{{ $item['urlToImage'] }}" alt="urlToImage">
+                            @endif
+                            <h5>{{ $item['title'] ?? 'Judul tidak tersedia' }}</h5>
+                        </div>
                     </div>
+                    @endforeach
                 </div>
-            @empty
-                <p>No articles found for Business.</p>
-            @endforelse
+            </div>
+            <div class="text-center">
+               <a href="{{ route('front.beritaindo.csv', ['kategori' => request()->kategori ?? 'business']) }}" class="btn btn-success">Unduh CSV Kategori Ini</a>
+           </div>
         </div>
-
-        <div class="slider-controls">
-            <button id="prev-business-btn" class="btn btn-secondary">Previous</button>
-            <button id="next-business-btn" class="btn btn-secondary">Next</button>
-        </div>
-
-        <h2 class="text-center">TechCrunch News</h2>
-        <div class="slider-container" id="techcrunch-news-container">
-            @forelse ($techCrunchArticles as $article)
-                <div class="article-box card">
-                    <div class="card-body">
-                        <h2 class="card-title">{{ $article['title'] }}</h2>
-                        <p class="card-text">{{ $article['description'] ?? 'No description available.' }}</p>
-                        <a href="{{ $article['url'] }}" class="btn btn-primary" target="_blank">Read more</a>
-                    </div>
-                </div>
-            @empty
-                <p>No articles found for TechCrunch.</p>
-            @endforelse
-        </div>
-
-        <div class="slider-controls">
-            <button id="prev-techcrunch-btn" class="btn btn-secondary">Previous</button>
-            <button id="next-techcrunch-btn" class="btn btn-secondary">Next</button>
-        </div>
-
-        <h2 class="text-center">WSJ News</h2>
-        <div class="slider-container" id="wsj-news-container">
-            @forelse ($wsjArticles as $article)
-                <div class="article-box card">
-                    <div class="card-body">
-                        <h2 class="card-title">{{ $article['title'] }}</h2>
-                        <p class="card-text">{{ $article['description'] ?? 'No description available.' }}</p>
-                        <a href="{{ $article['url'] }}" class="btn btn-primary" target="_blank">Read more</a>
-                    </div>
-                </div>
-            @empty
-                <p>No articles found for WSJ.</p>
-            @endforelse
-        </div>
-
-        <div class="slider-controls">
-            <button id="prev-wsj-btn" class="btn btn-secondary">Previous</button>
-            <button id="next-wsj-btn" class="btn btn-secondary">Next</button>
-        </div>
-
-        <h2 class="text-center">Guardian News</h2>
-        <div class="slider-container" id="guardian-news-container">
-            @forelse ($guardianArticles as $article)
-                <div class="article-box card">
-                    <div class="card-body">
-                        <h2 class="card-title">{{ $article['webTitle'] }}</h2>
-                        <p class="card-text">{{ $article['webDescription'] ?? 'No description available.' }}</p>
-                        <a href="{{ $article['webUrl'] }}" class="btn btn-primary" target="_blank">Read more</a>
-                    </div>
-                </div>
-            @empty
-                <p>No articles found for The Guardian.</p>
-            @endforelse
-        </div>
-        
-
-        <div class="slider-controls">
-            <button id="prev-guardian-btn" class="btn btn-secondary">Previous</button>
-            <button id="next-guardian-btn" class="btn btn-secondary">Next</button>
-        </div>
-
+        @endif
     </div>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // JavaScript for slider functionality
-        function addSliderFunctionality(containerId, prevBtnId, nextBtnId) {
-            const container = document.getElementById(containerId);
-            const prevBtn = document.getElementById(prevBtnId);
-            const nextBtn = document.getElementById(nextBtnId);
-            let scrollAmount = 0;
-
-            nextBtn.addEventListener('click', () => {
-                scrollAmount += 300; // Adjust scroll amount as needed
-                container.scrollTo({ left: scrollAmount, behavior: 'smooth' });
-            });
-
-            prevBtn.addEventListener('click', () => {
-                scrollAmount -= 300; // Adjust scroll amount as needed
-                if (scrollAmount < 0) scrollAmount = 0; // Prevent scrolling past the start
-                container.scrollTo({ left: scrollAmount, behavior: 'smooth' });
-            });
+        function openInNewTab(url) {
+            window.open(url, '_blank');
         }
-
-       // Initialize sliders
-addSliderFunctionality('apple-news-container', 'prev-apple-btn', 'next-apple-btn');
-addSliderFunctionality('tesla-news-container', 'prev-tesla-btn', 'next-tesla-btn');
-addSliderFunctionality('business-news-container', 'prev-business-btn', 'next-business-btn');
-addSliderFunctionality('techcrunch-news-container', 'prev-techcrunch-btn', 'next-techcrunch-btn');
-addSliderFunctionality('wsj-news-container', 'prev-wsj-btn', 'next-wsj-btn');
-addSliderFunctionality('guardian-news-container', 'prev-guardian-btn', 'next-guardian-btn');
-addSliderFunctionality('indonesian-news-container', 'prev-indonesian-btn', 'next-indonesian-btn'); // Add this line
     </script>
 </body>
 </html>

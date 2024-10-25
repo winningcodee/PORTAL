@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\BeritaController;
 
-Route::get('/berita/{kategori?}', [BeritaController::class, 'index'])->name('front.beritaindo');
+Route::get('/berita', [BeritaController::class, 'index'])->name('front.beritaindo');
+Route::get('/berita/all', [BeritaController::class, 'all'])->name('front.beritaindoall');
 Route::get('/beritaindo/download-csv', [BeritaController::class, 'downloadCsv'])->name('front.beritaindo.csv');
 
 
@@ -17,3 +18,4 @@ Route::get('/search', [FrontController::class, 'search'])->name('front.search');
 // routes/web.php
 
 Route::get('/news', [NewsController::class, 'BeritaIndo'])->name('front.news');
+Route::get('/news/all', [NewsController::class, 'BeritaIndoAll'])->name('front.newsall');
