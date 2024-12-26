@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Indonesia</title>
+    <title>Berita Indonesia CNN</title>
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -13,11 +13,11 @@
 </head>
 <body>
     <div class="container my-4">
-        <h1 class="text-center mb-4">Berita Kategori: {{ request()->kategori ?? 'Terbaru' }}</h1>
+        <h1 class="text-center mb-4">Berita ANTARA Kategori: {{ request()->kategori ?? 'Terbaru' }}</h1>
 
         <!-- Kategori Dropdown -->
         <div class="text-center mb-4">
-            <form action="{{ route('front.beritaindo') }}" method="GET">
+            <form action="{{ route('front.cnnindo') }}" method="GET">
                 <select name="kategori" onchange="this.form.submit()" class="form-control w-auto d-inline-block">
                     <option value="terbaru" {{ request()->kategori == 'terbaru' ? 'selected' : '' }}>Terbaru</option>
                     <option value="politik" {{ request()->kategori == 'politik' ? 'selected' : '' }}>Politik</option>
@@ -37,8 +37,8 @@
 
         <!-- Tombol Unduh CSV -->
         <div class="text-center mb-4">
-            <a href="{{ route('front.beritaindo.csv', ['kategori' => request()->kategori ?? 'terbaru']) }}" class="btn btn-success">Unduh CSV Kategori Ini</a>
-            <a href="{{ route('front.beritaindo.csv', ['kategori' => 'terbaru']) }}" class="btn btn-warning">Unduh Semua Berita</a>
+            <a href="{{ route('front.cnnindo.csv', ['kategori' => request()->kategori ?? 'terbaru']) }}" class="btn btn-success">Unduh CSV Kategori Ini</a>
+            <a href="{{ route('front.cnnindo.csv', ['kategori' => 'terbaru']) }}" class="btn btn-warning">Unduh Semua Berita</a>
         </div>
 
         @if(session('error'))
@@ -59,6 +59,7 @@
                         <div class="swiper-slide text-center">
                             <h2>{{ $item['title'] ?? 'Judul tidak tersedia' }}</h2>
                             <p>{{ $item['description'] ?? 'Deskripsi tidak tersedia' }}</p>
+                            <p><small class="text-muted">Kategori: {{ $item['kategori'] ?? 'Tidak tersedia' }}</small></p> <!-- Display Category -->
                             <p><a class="btn btn-primary" href="{{ $item['link'] ?? '#' }}" target="_blank">Baca Selengkapnya</a></p>
                             <p><small class="text-muted">{{ \Carbon\Carbon::parse($item['pubDate'] ?? now())->format('d M Y H:i') }}</small></p>
                             @if(isset($item['thumbnail']))

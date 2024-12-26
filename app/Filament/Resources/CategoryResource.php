@@ -38,8 +38,10 @@ class CategoryResource extends Resource
 
                 Forms\Components\FileUpload::make('icon')
                 ->image()
+                ->disk('public') // Ensure it's storing in the 'public' disk
+                ->directory('icons') // Specify the directory where images will be stored
                 ->required(),
-            ]);
+                        ]);
     }
 
     public static function table(Table $table): Table

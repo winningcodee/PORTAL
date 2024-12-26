@@ -3,218 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berita Indonesia</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-        }
-        .navbar {
-            background-color: #1a1a1a;
-            padding: 0.5rem 1rem;
-        }
-        .navbar-brand {
-            color: white;
-            font-weight: bold;
-            font-size: 1.5rem;
-        }
-        .nav-link {
-            color: #a0a0a0 !important;
-            font-size: 0.9rem;
-            padding: 0.5rem 1rem !important;
-        }
-        .active{
-            color: white !important
-        }
-        .nav-link:hover {
-            color: white !important;
-        }
-        .news-ticker {
-            background-color: #f8f9fa;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .main-content {
-            background-color: white;
-            padding: 1rem;
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .featured-news img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .featured-news h2 {
-            font-size: 1.5rem;
-            margin-top: 1rem;
-        }
-        .side-news {
-            border-left: 1px solid #e0e0e0;
-            padding-left: 1rem;
-        }
-        .side-news-item {
-            display: flex;
-            margin-bottom: 1rem;
-        }
-        .side-news-item img {
-            width: 100px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-right: 1rem;
-        }
-        .side-news-item h5 {
-            font-size: 1rem;
-            margin-bottom: 0.25rem;
-        }
-        .side-news-item p {
-            font-size: 0.8rem;
-            color: #666;
-        }
-        .trendy-news h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-        }
-        .trendy-news-item {
-            margin-bottom: 1rem;
-        }
-        .trendy-news-item img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .trendy-news-item h5 {
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
-        .navbar-toggler{
-            color: white !important
-        }
-        .clickable:hover{
-            cursor: pointer;
-        }
-    </style>
+    <title>Berita Indonesia ANTARA</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('front.beritaindo', ['kategori' => 'terbaru']) }}">Berita Indonesia</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link {{ request()->kategori == 'politik' ? 'active' : '' }}" href="{{ route('front.beritaindo', ['kategori' => 'politik']) }}">Politik</a></li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->kategori == 'hukum' ? 'active' : '' }}" href="{{ route('front.beritaindo', ['kategori' => 'hukum']) }}">Hukum</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->kategori == 'ekonomi' ? 'active' : '' }}" href="{{ route('front.beritaindo', ['kategori' => 'ekonomi']) }}">Ekonomi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->kategori == 'bola' ? 'active' : '' }}" href="{{ route('front.beritaindo', ['kategori' => 'bola']) }}">Bola</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->kategori == 'olahraga' ? 'active' : '' }}" href="{{ route('front.beritaindo', ['kategori' => 'olahraga']) }}">Olahraga</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->kategori == 'humaniora' ? 'active' : '' }}" href="{{ route('front.beritaindo', ['kategori' => 'humaniora']) }}">Humaniora</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->kategori == 'lifestyle' ? 'active' : '' }}" href="{{ route('front.beritaindo', ['kategori' => 'lifestyle']) }}">Lifestyle</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->kategori == 'hiburan' ? 'active' : '' }}" href="{{ route('front.beritaindo', ['kategori' => 'hiburan']) }}">Hiburan</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->kategori == 'dunia' ? 'active' : '' }}" href="{{ route('front.beritaindo', ['kategori' => 'dunia']) }}">Dunia</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->kategori == 'tekno' ? 'active' : '' }}" href="{{ route('front.beritaindo', ['kategori' => 'tekno']) }}">Tekno</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->kategori == 'otomotif' ? 'active' : '' }}" href="{{ route('front.beritaindo', ['kategori' => 'otomotif']) }}">Otomotif</a>
-                    </li>
-                    
-                </ul>
+    <div class="container my-4">
+        <h1 class="text-center mb-4">Berita SIDONEWS Kategori: {{ request()->kategori ?? 'Terbaru' }}</h1>
+
+        <!-- Kategori Dropdown -->
+        <div class="text-center mb-4">
+            <form action="{{ route('front.beritaindo') }}" method="GET">
+                <select name="kategori" onchange="this.form.submit()" class="form-control w-auto d-inline-block">
+                    <option value="terbaru" {{ request()->kategori == 'terbaru' ? 'selected' : '' }}>Terbaru</option>
+                    <option value="politik" {{ request()->kategori == 'politik' ? 'selected' : '' }}>Politik</option>
+                    <option value="hukum" {{ request()->kategori == 'hukum' ? 'selected' : '' }}>Hukum</option>
+                    <option value="ekonomi" {{ request()->kategori == 'ekonomi' ? 'selected' : '' }}>Ekonomi</option>
+                    <option value="bola" {{ request()->kategori == 'bola' ? 'selected' : '' }}>Bola</option>
+                    <option value="olahraga" {{ request()->kategori == 'olahraga' ? 'selected' : '' }}>Olahraga</option>
+                    <option value="humaniora" {{ request()->kategori == 'humaniora' ? 'selected' : '' }}>Humaniora</option>
+                    <option value="lifestyle" {{ request()->kategori == 'lifestyle' ? 'selected' : '' }}>Lifestyle</option>
+                    <option value="hiburan" {{ request()->kategori == 'hiburan' ? 'selected' : '' }}>Hiburan</option>
+                    <option value="dunia" {{ request()->kategori == 'dunia' ? 'selected' : '' }}>Dunia</option>
+                    <option value="tekno" {{ request()->kategori == 'tekno' ? 'selected' : '' }}>Tekno</option>
+                    <option value="otomotif" {{ request()->kategori == 'otomotif' ? 'selected' : '' }}>Otomotif</option>
+                </select>
+            </form>
+        </div>
+
+        <!-- Tombol Unduh CSV -->
+        <div class="text-center mb-4">
+            <a href="{{ route('front.beritaindo.csv', ['kategori' => request()->kategori ?? 'terbaru']) }}" class="btn btn-success">Unduh CSV Kategori Ini</a>
+            <a href="{{ route('front.beritaindo.csv', ['kategori' => 'terbaru']) }}" class="btn btn-warning">Unduh Semua Berita</a>
+        </div>
+
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
             </div>
-        </div>
-    </nav>
+        @endif
 
-    
-    @if(session('error'))
-    <div class="news-ticker">
-        <div class="container">
-            <strong>Notice:</strong> {{ session('error') }}
-        </div>
-    </div>
-    @endif
-
-    @if ($berita->isEmpty())
-        <div class="alert alert-warning" role="alert">
-            Tidak ada berita untuk kategori ini.
-        </div>
-    @else
-    <div class="container mt-4">
-        <div class="main-content">
-            <div class="row">
-                <div class="col-md-8 featured-news">
-                    <div class="clickable" onclick="openInNewTab(`{{ $berita[0]['link'] }}`)">
-                        <img src="{{ $berita[0]['thumbnail'] }}" alt="Featured News">
-                        <h2>{{ $berita[0]['title'] }}</h2>
-                        <p>{{ $berita[0]['description'] }}</p>
-                    </div>
-                </div>
-                <div class="col-md-4 side-news">
-                    @foreach ($berita->slice(1, 5) as $item)
-                    <div class="clickable" onclick="openInNewTab(`{{ $item['link'] }}`)">
-                        <div class="side-news-item">
-                            <img src="{{ $item['thumbnail'] }}" alt="thumbnail">
-                            <div>
-                                <h5>{{ $item['title'] ?? 'Judul tidak tersedia' }}</h5>
-                                <p>{{ \Carbon\Carbon::parse($item['pubDate'] ?? now())->format('d M Y H:i') }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
+        @if ($berita->isEmpty())
+            <div class="alert alert-warning" role="alert">
+                Tidak ada berita untuk kategori ini.
             </div>
-
-            <div class="trendy-news mt-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h3>Berita Terkait</h3>
-                    <a href="{{ route('front.beritaindoall', ['kategori' => request()->kategori ?? 'terbaru']) }}">Lihat Semua Berita</a>
-                </div>
-                <div class="row">
-                    @foreach ($berita->slice(6, 4) as $item)
-                    <div class="col-md-3 trendy-news-item">
-                        <div class="clickable" onclick="openInNewTab(`{{ $item['link'] }}`)">
+        @else
+            <!-- Swiper -->
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    @foreach ($berita as $item)
+                        <div class="swiper-slide text-center">
+                            <h2>{{ $item['title'] ?? 'Judul tidak tersedia' }}</h2>
+                            <p>{{ $item['description'] ?? 'Deskripsi tidak tersedia' }}</p>
+                            <p><small class="text-muted">Kategori: {{ $item['kategori'] ?? 'Tidak tersedia' }}</small></p> <!-- Display Category -->
+                            <p><a class="btn btn-primary" href="{{ $item['link'] ?? '#' }}" target="_blank">Baca Selengkapnya</a></p>
+                            <p><small class="text-muted">{{ \Carbon\Carbon::parse($item['pubDate'] ?? now())->format('d M Y H:i') }}</small></p>
                             @if(isset($item['thumbnail']))
-                                <img src="{{ $item['thumbnail'] }}" alt="thumbnail">
+                                <img src="{{ $item['thumbnail'] }}" alt="Thumbnail">
                             @endif
-                            <h5>{{ $item['title'] ?? 'Judul tidak tersedia' }}</h5>
                         </div>
-                    </div>
                     @endforeach
                 </div>
+                <!-- Tambahkan navigasi -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
             </div>
-            <div class="text-center">
-               <a href="{{ route('front.beritaindo.csv', ['kategori' => request()->kategori ?? 'terbaru']) }}" class="btn btn-success">Unduh CSV Kategori Ini</a>
-               <a href="{{ route('front.beritaindo.csv', ['kategori' => 'terbaru']) }}" class="btn btn-warning">Unduh Semua Berita</a>
-           </div>
-        </div>
         @endif
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery, Popper.js, and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Swiper JS -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
-        function openInNewTab(url) {
-            window.open(url, '_blank');
-        }
+        const swiper = new Swiper('.swiper-container', {
+            loop: true, // Untuk loop berita
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
     </script>
 </body>
 </html>

@@ -4,10 +4,14 @@ use App\Http\Controllers\FrontController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\BeritaController;
-
-Route::get('/berita', [BeritaController::class, 'index'])->name('front.beritaindo');
-Route::get('/berita/all', [BeritaController::class, 'all'])->name('front.beritaindoall');
+use App\Http\Controllers\CnnBeritaController;
+Route::get('/berita/{kategori?}', [BeritaController::class, 'index'])->name('front.beritaindo');
 Route::get('/beritaindo/download-csv', [BeritaController::class, 'downloadCsv'])->name('front.beritaindo.csv');
+
+
+
+Route::get('/cnnberita/{kategori?}', [CnnBeritaController::class, 'indexCnn'])->name('front.cnnindo');
+Route::get('/cnnberita/download-csv', [CnnBeritaController::class, 'downloadCsvcnn'])->name('front.cnnindo.csv');
 
 
 Route::get('/', [FrontController::class, 'index'])->name('front.index');
@@ -18,4 +22,6 @@ Route::get('/search', [FrontController::class, 'search'])->name('front.search');
 // routes/web.php
 
 Route::get('/news', [NewsController::class, 'BeritaIndo'])->name('front.news');
-Route::get('/news/all', [NewsController::class, 'BeritaIndoAll'])->name('front.newsall');
+
+Route::get('/news/download', [NewsController::class, 'downloadCSV'])->name('front.news.csv');
+

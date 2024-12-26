@@ -1,23 +1,48 @@
 @extends('front.master')
 @section('content')
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    #Category {
+    overflow-x: auto;  /* Membolehkan scroll horizontal */
+    white-space: nowrap;  /* Membuat elemen dalam satu baris horizontal */
+}
 
+#Category:active {
+    cursor: grabbing;  /* Mengubah cursor saat sedang menarik */
+}
+
+</style>
     <body class="font-[Poppins] pb-[72px]">
         <x-navbar />
-        <nav id="Category" class="max-w-[1130px] mx-auto flex justify-center items-center gap-4 mt-[30px]">
-			<a href="{{ route('front.news', ['kategori' => 'business']) }}" class="button">Go to Berita</a>
-			<a href="{{ route('front.beritaindo') }}" class="button">Go to Berita Indo</a>
-
-
-            @foreach ($categories as $category)
-                <a href="{{ route('front.category', $category->slug) }}"
-                    class="rounded-full p-[12px_22px] flex gap-[10px] font-semibold transition-all duration-300 border border-[#EEF0F7] hover:ring-2 hover:ring-[#FF6B18]">
-                    <div class="w-6 h-6 flex shrink-0">
-                        <img src="{{ Storage::url($category->icon) }}" alt="icon" />
+        <div class="relative">
+            <!-- Kontainer Navigasi -->
+            <nav id="Category" class="max-w-[1130px] mx-auto flex justify-start items-center gap-4 mt-[30px] overflow-x-auto cursor-grab">
+                <a href="{{ route('front.news') }}" class="button">Go to Berita</a>
+                <!-- Dropdown Navigation -->
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="newsDropdown" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        Select News Source
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="newsDropdown">
+                        <a class="dropdown-item" href="{{ route('front.beritaindo') }}">SINDONEWS</a>
+                        <a class="dropdown-item" href="{{ route('front.cnnindo') }}">ANTARA</a>
                     </div>
-                    <span>{{ $category->name }}</span>
-                </a>
-            @endforeach
-        </nav>
+                </div>
+                @foreach ($categories as $category)
+                    <a href="{{ route('front.category', $category->slug) }}"
+                        class="rounded-full p-[12px_22px] flex gap-[10px] font-semibold transition-all duration-300 border border-[#EEF0F7] hover:ring-2 hover:ring-[#FF6B18]">
+                        <div class="w-6 h-6 flex shrink-0">
+                            <img src="{{ Storage::url($category->icon) }}" alt="icon" />
+                        </div>
+                        <span>{{ $category->name }}</span>
+                    </a>
+                @endforeach
+            </nav>
+        </div>
+        
+        
         <section id="Featured" class="mt-[30px]">
             <div class="main-carousel w-full">
 
@@ -122,251 +147,50 @@
 
             </div>
         </section>
-        <section id="Advertisement" class="max-w-[1130px] mx-auto flex justify-center mt-[70px]">
-            <div class="flex flex-col gap-3 shrink-0 w-fit">
-                @if ($bannerads)
-                    <a href="{{ $bannerads->link }}">
-                        <div class="w-[900px] h-[120px] flex shrink-0 border border-[#EEF0F7] rounded-2xl overflow-hidden">
-                            <img src="{{ Storage::url($bannerads->thumbnail) }}" class="object-cover w-full h-full"
-                                alt="ads" />
-                        </div>
-                    </a>
-                @else
-                    <p>No banner ads available.</p> <!-- Tampilkan pesan jika tidak ada banner -->
-                @endif
-
-                <p class="font-medium text-sm leading-[21px] text-[#A3A6AE] flex gap-1">
-                    Our Advertisement <a href="#" class="w-[18px] h-[18px]"><img
-                            src="assets/images/icons/message-question.svg" alt="icon" /></a>
-                </p>
-            </div>
-        </section>
-        <section id="Latest-entertainment" class="max-w-[1130px] mx-auto flex flex-col gap-[30px] mt-[70px]">
-            <div class="flex justify-between items-center">
-                <h2 class="font-bold text-[26px] leading-[39px]">
-                    Latest For You <br />
-                    in Entertainment
-                </h2>
-                <a href="categoryPage.html"
-                    class="rounded-full p-[12px_22px] flex gap-[10px] font-semibold transition-all duration-300 border border-[#EEF0F7] hover:ring-2 hover:ring-[#FF6B18]">Explore
-                    All</a>
-            </div>
-            <div class="flex justify-between items-center h-fit">
-                <div class="featured-news-card relative w-full h-[424px] flex flex-1 rounded-[20px] overflow-hidden">
-                    @if ($entertainment_featured_articles)
-                        <img src="{{ Storage::url($entertainment_featured_articles->thumbnail) }}"
-                            class="thumbnail absolute w-full h-full object-cover" alt="icon" />
-                    @else
-                        <p>No featured articles available.</p> <!-- Tampilkan pesan jika tidak ada artikel -->
-                    @endif
-
-                    <div class="w-full h-full bg-gradient-to-b from-[rgba(0,0,0,0)] to-[rgba(0,0,0,0.9)] absolute z-10">
-                    </div>
-                    <div class="card-detail w-full flex items-end p-[30px] relative z-20">
-                        <div class="flex flex-col gap-[10px]">
-                            <p class="text-white">Featured</p>
-                            @if ($entertainment_featured_articles)
-                                <a href="details.html"
-                                    class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">
-                                    {{ $entertainment_featured_articles->name }}
-                                </a>
-                            @else
-                                <p>Tidak ada artikel yang tersedia.</p> <!-- Pesan jika data tidak ada -->
-                            @endif
-
-                            @if ($entertainment_featured_articles)
-                                <p class="text-white">{{ $entertainment_featured_articles->created_at->format('M d, Y') }}
-                                </p>
-                            @else
-                                <p class="text-white">Tanggal tidak tersedia.</p> <!-- Pesan jika data tidak ada -->
-                            @endif
-
-                        </div>
-                    </div>
-                </div>
-                <div class="h-[424px] w-fit px-5 overflow-y-scroll overflow-x-hidden relative custom-scrollbar">
-                    <div class="w-[455px] flex flex-col gap-5 shrink-0">
-                        @forelse($entertainment_articles as $article)
-                            <a href="{{ route('front.details', $article->slug) }}" class="card py-[2px]">
-                                <div
-                                    class="rounded-[20px] border border-[#EEF0F7] p-[14px] flex items-center gap-4 hover:ring-2 hover:ring-[#FF6B18] transition-all duration-300">
-                                    <div class="w-[130px] h-[100px] flex shrink-0 rounded-[20px] overflow-hidden">
-                                        <img src="{{ Storage::url($article->thumbnail) }}"
-                                            class="object-cover w-full h-full" alt="thumbnail" />
-                                    </div>
-                                    <div class="flex flex-col justify-center-center gap-[6px]">
-                                        <h3 class="font-bold text-lg leading-[27px]">
-                                            {{ substr($article->name, 0, 50) }}{{ strlen($article->name) > 50 ? '...' : '' }}
-                                        </h3>
-                                        <p class="text-sm leading-[21px] text-[#A3A6AE]">
-                                            {{ $article->created_at->format('M d, Y') }}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        @empty
-                            <p>belum ada artikel terbaru</p>
-                        @endforelse
-
-                    </div>
-                    <div
-                        class="sticky z-10 bottom-0 w-full h-[100px] bg-gradient-to-b from-[rgba(255,255,255,0.19)] to-[rgba(255,255,255,1)]">
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="Latest-business" class="max-w-[1130px] mx-auto flex flex-col gap-[30px] mt-[70px]">
-            <div class="flex justify-between items-center">
-                <h2 class="font-bold text-[26px] leading-[39px]">
-                    Latest For You <br />
-                    in Business
-                </h2>
-                <a href="categoryPage.html"
-                    class="rounded-full p-[12px_22px] flex gap-[10px] font-semibold transition-all duration-300 border border-[#EEF0F7] hover:ring-2 hover:ring-[#FF6B18]">Explore
-                    All</a>
-            </div>
-            <div class="flex justify-between items-center h-fit">
-                <div class="featured-news-card relative w-full h-[424px] flex flex-1 rounded-[20px] overflow-hidden">
-                    @if ($business_featured_articles && $business_featured_articles->thumbnail)
-                        <img src="{{ Storage::url($business_featured_articles->thumbnail) }}"
-                            class="thumbnail absolute w-full h-full object-cover" alt="icon" />
-                    @else
-                        <img src="path/to/default/image.jpg" class="thumbnail absolute w-full h-full object-cover"
-                            alt="default icon" /> <!-- Gambar default jika tidak ada -->
-                    @endif
-
-                    <div class="w-full h-full bg-gradient-to-b from-[rgba(0,0,0,0)] to-[rgba(0,0,0,0.9)] absolute z-10">
-                    </div>
-                    <div class="card-detail w-full flex items-end p-[30px] relative z-20">
-                        <div class="flex flex-col gap-[10px]">
-                            <p class="text-white">Featured</p>
-                            @if ($business_featured_articles)
-                                <a href="details.html"
-                                    class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">
-                                    {{ $business_featured_articles->name }}
-                                </a>
-                            @else
-                                <a href="details.html"
-                                    class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">
-                                    Artikel tidak tersedia
-                                </a>
-                            @endif
-                            @if ($business_featured_articles)
-                                <p class="text-white">{{ $business_featured_articles->created_at->format('M d, Y') }}</p>
-                            @else
-                                <p class="text-white">Tanggal tidak tersedia</p>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                <div class="h-[424px] w-fit px-5 overflow-y-scroll overflow-x-hidden relative custom-scrollbar">
-                    <div class="w-[455px] flex flex-col gap-5 shrink-0">
-                        @forelse($business_articles as $article)
-                            <a href="{{ route('front.details', $article->slug) }}" class="card py-[2px]">
-                                <div
-                                    class="rounded-[20px] border border-[#EEF0F7] p-[14px] flex items-center gap-4 hover:ring-2 hover:ring-[#FF6B18] transition-all duration-300">
-                                    <div class="w-[130px] h-[100px] flex shrink-0 rounded-[20px] overflow-hidden">
-                                        <img src="{{ Storage::url($article->thumbnail) }}"
-                                            class="object-cover w-full h-full" alt="thumbnail" />
-                                    </div>
-                                    <div class="flex flex-col justify-center-center gap-[6px]">
-                                        <h3 class="font-bold text-lg leading-[27px]">
-                                            {{ substr($article->name, 0, 50) }}{{ strlen($article->name) > 50 ? '...' : '' }}
-                                        </h3>
-                                        <p class="text-sm leading-[21px] text-[#A3A6AE]">
-                                            {{ $article->created_at->format('M d, Y') }}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        @empty
-                            <p>belum ada artikel terbaru</p>
-                        @endforelse
-
-                    </div>
-                    <div
-                        class="sticky z-10 bottom-0 w-full h-[100px] bg-gradient-to-b from-[rgba(255,255,255,0.19)] to-[rgba(255,255,255,1)]">
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section id="Latest-automotive" class="max-w-[1130px] mx-auto flex flex-col gap-[30px] mt-[70px]">
-            <div class="flex justify-between items-center">
-                <h2 class="font-bold text-[26px] leading-[39px]">
-                    Latest For You <br />
-                    in Automotive
-                </h2>
-                <a href="categoryPage.html"
-                    class="rounded-full p-[12px_22px] flex gap-[10px] font-semibold transition-all duration-300 border border-[#EEF0F7] hover:ring-2 hover:ring-[#FF6B18]">Explore
-                    All</a>
-            </div>
-            <div class="flex justify-between items-center h-fit">
-                <div class="featured-news-card relative w-full h-[424px] flex flex-1 rounded-[20px] overflow-hidden">
-                    @if ($automotive_featured_articles)
-                        <img src="{{ Storage::url($automotive_featured_articles->thumbnail) }}"
-                            class="thumbnail absolute w-full h-full object-cover" alt="icon" />
-                    @else
-                        <img src="path/to/default/image.jpg" class="thumbnail absolute w-full h-full object-cover"
-                            alt="default icon" />
-                    @endif
-
-                    <div class="w-full h-full bg-gradient-to-b from-[rgba(0,0,0,0)] to-[rgba(0,0,0,0.9)] absolute z-10">
-                    </div>
-                    <div class="card-detail w-full flex items-end p-[30px] relative z-20">
-                        <div class="flex flex-col gap-[10px]">
-                            <p class="text-white">Featured</p>
-                            @if ($automotive_featured_articles)
-                                <a href="details.html"
-                                    class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">
-                                    {{ $automotive_featured_articles->name }}
-                                </a>
-                            @else
-                                <a href="#"
-                                    class="font-bold text-[30px] leading-[36px] text-white hover:underline transition-all duration-300">
-                                    Artikel tidak tersedia
-                                </a>
-                            @endif
-                            @if ($automotive_featured_articles)
-                                <p class="text-white">{{ $automotive_featured_articles->created_at->format('M d, Y') }}
-                                </p>
-                            @else
-                                <p class="text-white">Tanggal tidak tersedia</p>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                <div class="h-[424px] w-fit px-5 overflow-y-scroll overflow-x-hidden relative custom-scrollbar">
-                    <div class="w-[455px] flex flex-col gap-5 shrink-0">
-                        @forelse($automotive_articles as $article)
-                            <a href="{{ route('front.details', $article->slug) }}" class="card py-[2px]">
-                                <div
-                                    class="rounded-[20px] border border-[#EEF0F7] p-[14px] flex items-center gap-4 hover:ring-2 hover:ring-[#FF6B18] transition-all duration-300">
-                                    <div class="w-[130px] h-[100px] flex shrink-0 rounded-[20px] overflow-hidden">
-                                        <img src="{{ Storage::url($article->thumbnail) }}"
-                                            class="object-cover w-full h-full" alt="thumbnail" />
-                                    </div>
-                                    <div class="flex flex-col justify-center-center gap-[6px]">
-                                        <h3 class="font-bold text-lg leading-[27px]">
-                                            {{ substr($article->name, 0, 50) }}{{ strlen($article->name) > 50 ? '...' : '' }}
-                                        </h3>
-                                        <p class="text-sm leading-[21px] text-[#A3A6AE]">
-                                            {{ $article->created_at->format('M d, Y') }}</p>
-                                    </div>
-                                </div>
-                            </a>
-                        @empty
-                            <p>belum ada artikel terbaru</p>
-                        @endforelse
-
-                    </div>
-                    <div
-                        class="sticky z-10 bottom-0 w-full h-[100px] bg-gradient-to-b from-[rgba(255,255,255,0.19)] to-[rgba(255,255,255,1)]">
-                    </div>
-                </div>
-            </div>
-        </section>
 
 
-		
     </body>
+    <script>
+        let isMouseDown = false;
+let startX, scrollLeft;
+
+const categoryNav = document.getElementById('Category');
+
+// Saat mouse ditekan
+categoryNav.addEventListener('mousedown', (e) => {
+    isMouseDown = true;
+    startX = e.pageX - categoryNav.offsetLeft;  // Menyimpan posisi awal mouse
+    scrollLeft = categoryNav.scrollLeft;  // Menyimpan posisi scroll saat ini
+    categoryNav.style.cursor = 'grabbing';  // Ganti cursor saat menarik
+});
+
+// Saat mouse bergerak
+categoryNav.addEventListener('mousemove', (e) => {
+    if (!isMouseDown) return;  // Jika mouse tidak ditekan, jangan lakukan apa-apa
+    e.preventDefault();
+    const x = e.pageX - categoryNav.offsetLeft;  // Mendapatkan posisi mouse
+    const walk = (x - startX) * 2;  // Mengatur kecepatan scroll
+    categoryNav.scrollLeft = scrollLeft - walk;  // Geser konten
+});
+
+// Saat mouse dilepas
+categoryNav.addEventListener('mouseup', () => {
+    isMouseDown = false;
+    categoryNav.style.cursor = 'grab';  // Ganti kembali cursor saat mouse dilepas
+});
+
+// Saat mouse keluar dari elemen
+categoryNav.addEventListener('mouseleave', () => {
+    isMouseDown = false;
+    categoryNav.style.cursor = 'grab';  // Ganti kembali cursor saat mouse keluar
+});
+
+    </script>
+    <!-- Include jQuery and Bootstrap JS (if not already included) -->
+    <!-- jQuery, Popper.js v1.16.1, and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 @endsection
 @push('after-styles')
     <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css" />

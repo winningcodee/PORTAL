@@ -10,6 +10,22 @@ use App\Models\BannerAdvertisement;
 
 class FrontController extends Controller
 {
+    public function pricing()
+{
+    if (Auth::check()) {
+        if (Auth::user()->hasActiveSubscription()) {
+            return redirect()->route('front.index');
+        }
+    } else {
+        return redirect()->route('login');
+    }
+    $user = Auth::user();
+    $allPaket = Paket::with('keypointPakets')->get();
+    $transaction = $user->transactions()->where('status', 'success')->first(); // Ambil transaksi yang tidak sukses
+
+
+    return view('front.pricing',compact('allPaket','transaction'));
+}
     //
     public function index(){
         $categories = Category::all();
