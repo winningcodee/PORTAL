@@ -69,5 +69,3 @@ Gunakan kredensial berikut untuk masuk sebagai admin:
 -   **Password:** password
 
 ---
-
-Jika Anda mengalami masalah, silakan merujuk ke dokumentasi Laravel atau hubungi pemelihara proyek.
