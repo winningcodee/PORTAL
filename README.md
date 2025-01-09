@@ -1,4 +1,4 @@
-# Panduan Instalasi Proyek Laravel
+# Panduan Instalasi Proyek Laravel Poertal Berita Kelompok 4
 
 Ikuti langkah-langkah di bawah ini untuk mengatur dan menjalankan proyek Laravel:
 
